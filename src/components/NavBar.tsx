@@ -4,7 +4,7 @@ import gameMagLogo from '../assets/game_mag.webp'
 const NavBar = () => {
     return (
         <HStack>
-            <Image src={gameMagLogo} boxSize='60px' />
+            <Image src={gameMagLogo} boxSize='60px' p={1} />
             <Text>NavBar</Text>
         </HStack>
     )
