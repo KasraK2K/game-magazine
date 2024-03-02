@@ -1,11 +1,12 @@
-import { HStack, Image, Text } from '@chakra-ui/react'
+import { HStack, Image } from '@chakra-ui/react'
 import gameMagLogo from '../assets/game_mag.webp'
+import ColorModeSwitch from './ColorModeSwitch'
 
 const NavBar = () => {
     return (
-        <HStack>
-            <Image src={gameMagLogo} boxSize='60px' p={1} />
-            <Text>NavBar</Text>
+        <HStack justifyContent='space-between' padding='10px'>
+            <Image src={gameMagLogo} boxSize='60px' />
+            <ColorModeSwitch />
         </HStack>
     )
 }
