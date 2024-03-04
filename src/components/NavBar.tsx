@@ -3,11 +3,15 @@ import gameMagLogo from '../assets/game_mag.webp'
 import ColorModeSwitch from './ColorModeSwitch'
 import SearchInput from './SearchInput'
 
-const NavBar = () => {
+interface Props {
+    onSearch: (searchText: string) => void
+}
+
+const NavBar = ({ onSearch }: Props) => {
     return (
-        <HStack padding='10px'>
+        <HStack width='100%' padding='10px'>
             <Image src={gameMagLogo} boxSize='60px' />
-            <SearchInput />
+            <SearchInput onSearch={onSearch} />
             <ColorModeSwitch />
         </HStack>
     )

@@ -12,10 +12,11 @@ export interface GameQuey {
     genre: Genre | null
     platform: Platform | null
     sortOrder: string
+    searchText: string
 }
 
 function App() {
-    const [gameQuey, setGameQuery] = useState<GameQuey>({} as GameQuey)
+    const [gameQuery, setGameQuery] = useState<GameQuey>({} as GameQuey)
 
     return (
         <Grid
@@ -23,28 +24,28 @@ function App() {
             templateColumns={{ base: '1fr', lg: '250px 1fr' }}
         >
             <GridItem area='nav'>
-                <NavBar />
+                <NavBar onSearch={(searchText) => setGameQuery({ ...gameQuery, searchText })} />
             </GridItem>
             <Show above='lg'>
                 <GridItem area='aside' paddingX={4}>
                     <GenreList
-                        selectedGenre={gameQuey.genre}
-                        onSelectGenre={(genre) => setGameQuery({ ...gameQuey, genre })}
+                        selectedGenre={gameQuery.genre}
+                        onSelectGenre={(genre) => setGameQuery({ ...gameQuery, genre })}
                     />
                 </GridItem>
             </Show>
             <GridItem area='main'>
                 <HStack spacing={5} marginLeft={2} marginBottom={5}>
                     <PlatformSelector
-                        selectedPlatform={gameQuey.platform}
-                        onSelectPlatform={(platform) => setGameQuery({ ...gameQuey, platform })}
+                        selectedPlatform={gameQuery.platform}
+                        onSelectPlatform={(platform) => setGameQuery({ ...gameQuery, platform })}
                     />
                     <SortSelector
-                        sortOrder={gameQuey.sortOrder}
-                        onSelectSortOrder={(sortOrder) => setGameQuery({ ...gameQuey, sortOrder })}
+                        sortOrder={gameQuery.sortOrder}
+                        onSelectSortOrder={(sortOrder) => setGameQuery({ ...gameQuery, sortOrder })}
                     />
                 </HStack>
-                <GameGrid gameQuery={gameQuey} />
+                <GameGrid gameQuery={gameQuery} />
             </GridItem>
         </Grid>
     )
