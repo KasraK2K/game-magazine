@@ -17,9 +17,11 @@ const PlatformSelector = ({ selectedPlatform, onSelectPlatform }: Props) => {
                 {selectedPlatform?.name ?? 'Platform'}
             </MenuButton>
             <MenuList>
+                <MenuItem onClick={() => onSelectPlatform({} as Platform)}>Platform</MenuItem>
                 {data.map((platform) => (
                     <MenuItem
                         key={platform.id}
+                        value={platform.id}
                         onClick={() => onSelectPlatform(platform)}
                         textColor={platform.id === selectedPlatform?.id ? 'green.300' : ''}
                     >
