@@ -20,6 +20,7 @@ const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?:
                 .get<FetchResponse<T>>(endpoint, { signal: controller.signal, ...requestConfig })
                 .then((response) => {
                     setData(response.data.results)
+                    setError('')
                     setLoading(false)
                 })
                 .catch((error) => {
