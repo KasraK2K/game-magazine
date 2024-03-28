@@ -5,7 +5,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 const DEFAULT_STALE_TIME = 10 * 60 * 1000 // 10 Minutes
 
 /* ---------------------------------- Types --------------------------------- */
-interface FetchResponse<T> {
+export interface FetchResponse<T> {
     count: number
     results: T[]
 }
@@ -13,7 +13,7 @@ interface FetchResponse<T> {
 export interface CacheQueryConfig<T> {
     retry?: number
     staleTime?: number
-    initialData?: T[]
+    initialData?: FetchResponse<T>
 }
 
 export interface CacheInfiniteQueryConfig<T> extends Omit<CacheQueryConfig<T>, 'initialData'> {
@@ -27,9 +27,9 @@ const useData = <T>(
     cacheConfig?: CacheQueryConfig<T>,
     config?: AxiosRequestConfig,
 ) => {
-    const fetchData = () => apiClient.get<FetchResponse<T>>(url, config).then((response) => response.results)
+    const fetchData = () => apiClient.get<FetchResponse<T>>(url, config)
 
-    return useQuery<T[]>({
+    return useQuery<FetchResponse<T>>({
         queryKey,
         queryFn: fetchData,
         retry: cacheConfig?.retry ?? 1,
@@ -45,7 +45,7 @@ const useInfiniteData = <T>(
     cacheConfig?: CacheInfiniteQueryConfig<T>,
     config?: AxiosRequestConfig,
 ) => {
-    const fetchData = () => apiClient.get<FetchResponse<T>>(url, config).then((response) => response.results)
+    const fetchData = () => apiClient.get<FetchResponse<T>>(url, config)
 
     const calculatePageParam = (page: number, operateNumber: number) => {
         const pageNumber = page > 0 ? page + operateNumber : undefined
@@ -53,7 +53,7 @@ const useInfiniteData = <T>(
         return pageNumber
     }
 
-    return useInfiniteQuery<T[]>({
+    return useInfiniteQuery<FetchResponse<T>>({
         queryKey,
         queryFn: fetchData,
         retry: cacheConfig?.retry ?? 1,

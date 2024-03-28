@@ -8,9 +8,9 @@ export interface Platform {
 }
 
 const usePlatforms = () => {
-    return useData('/platforms/lists/parents', ['platforms', 'lists', 'parents'], {
+    return useData<Platform>('/platforms/lists/parents', ['platforms', 'lists', 'parents'], {
         staleTime: 24 * 60 * 60 * 1000,
-        initialData: platforms,
+        initialData: { count: platforms.length, results: platforms },
     })
 }
 
