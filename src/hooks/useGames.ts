@@ -1,6 +1,6 @@
 import { GameQuery } from '../App'
 import { Platform } from './usePlatforms'
-import useInfiniteData from './useInfiniteData'
+import { useInfiniteData } from './useData'
 
 export interface Game {
     id: number
