@@ -23,8 +23,8 @@ const GameGrid = ({ gameQuery }: Props) => {
             </Box>
         )
     return (
-        <>
-            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} padding='10px' spacing={6}>
+        <Box padding='10px'>
+            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
                 {isLoading && isFetchingNextPage && skeletons.map((skeleton) => <GameCardSkeleton key={skeleton} />)}
                 {data?.pages.map((page, index) => (
                     <React.Fragment key={index}>
@@ -35,15 +35,12 @@ const GameGrid = ({ gameQuery }: Props) => {
                 ))}
                 {/* {data?.pages.map((game) => )} */}
             </SimpleGrid>
-            <Button
-                disabled={!hasNextPage || isFetchingNextPage}
-                onClick={() => fetchNextPage()}
-                marginLeft={2}
-                marginTop={4}
-            >
-                {isFetching && isFetchingNextPage ? 'Fetching...' : 'Load More'}
-            </Button>
-        </>
+            {hasNextPage && (
+                <Button disabled={!hasNextPage || isFetchingNextPage} onClick={() => fetchNextPage()} marginY={5}>
+                    {isFetching && isFetchingNextPage ? 'Fetching...' : 'Load More'}
+                </Button>
+            )}
+        </Box>
     )
 }
 
