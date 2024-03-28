@@ -19,7 +19,7 @@ const useGames = (gameQuery: GameQuery) => {
         page_size: gameQuery.pageSize,
     }
 
-    return useInfiniteData<Game>('/games', ['games', params], { params })
+    return useInfiniteData<Game>('/games', ['games', params], undefined, { params })
 }
 
 export default useGames

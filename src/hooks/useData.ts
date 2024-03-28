@@ -1,24 +1,51 @@
+/* ------------------------------ Dependencies ------------------------------ */
 import apiClient, { AxiosRequestConfig } from '../services/api-client'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 
+const DEFAULT_STALE_TIME = 10 * 60 * 1000 // 10 Minutes
+
+/* ---------------------------------- Types --------------------------------- */
 interface FetchResponse<T> {
     count: number
-    results: T
+    results: T[]
 }
 
-const useData = <T>(url: string, queryKey: unknown[], config: AxiosRequestConfig) => {
+export interface CacheQueryConfig<T> {
+    retry?: number
+    staleTime?: number
+    initialData?: T[]
+}
+
+export interface CacheInfiniteQueryConfig<T> extends Omit<CacheQueryConfig<T>, 'initialData'> {
+    initialPageParam?: number
+}
+
+/* -------------------------------- Use Data -------------------------------- */
+const useData = <T>(
+    url: string,
+    queryKey: unknown[],
+    cacheConfig?: CacheQueryConfig<T>,
+    config?: AxiosRequestConfig,
+) => {
     const fetchData = () => apiClient.get<FetchResponse<T>>(url, config).then((response) => response.results)
 
-    return useQuery({
+    return useQuery<T[]>({
         queryKey,
         queryFn: fetchData,
-        retry: 1,
-        staleTime: 5 * 60 * 1000, // 5 min
+        retry: cacheConfig?.retry ?? 1,
+        staleTime: cacheConfig?.staleTime ?? DEFAULT_STALE_TIME,
+        initialData: cacheConfig?.initialData,
     })
 }
 
-const useInfiniteData = <T>(url: string, queryKey: unknown[], config?: AxiosRequestConfig) => {
-    const fetchData = () => apiClient.get<FetchResponse<T[]>>(url, config).then((response) => response.results)
+/* ---------------------------- Use Infinite Data --------------------------- */
+const useInfiniteData = <T>(
+    url: string,
+    queryKey: unknown[],
+    cacheConfig?: CacheInfiniteQueryConfig<T>,
+    config?: AxiosRequestConfig,
+) => {
+    const fetchData = () => apiClient.get<FetchResponse<T>>(url, config).then((response) => response.results)
 
     const calculatePageParam = (page: number, operateNumber: number) => {
         const pageNumber = page > 0 ? page + operateNumber : undefined
@@ -29,9 +56,9 @@ const useInfiniteData = <T>(url: string, queryKey: unknown[], config?: AxiosRequ
     return useInfiniteQuery<T[]>({
         queryKey,
         queryFn: fetchData,
-        retry: 1,
-        staleTime: 5 * 60 * 1000, // 5 min
-        initialPageParam: 1,
+        retry: cacheConfig?.retry ?? 1,
+        staleTime: cacheConfig?.staleTime ?? DEFAULT_STALE_TIME,
+        initialPageParam: cacheConfig?.initialPageParam ?? 1,
         getNextPageParam: (_lastPage, allPages) => calculatePageParam(allPages.length, 1),
         getPreviousPageParam: (_lastPage, allPages) => calculatePageParam(allPages.length, -1),
     })
