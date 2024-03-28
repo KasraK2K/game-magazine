@@ -13,8 +13,6 @@ const apiClient = axios.create({
 })
 
 class ApiClient {
-    constructor() {}
-
     async get<T>(endpoint: string, config?: AxiosRequestConfig) {
         return apiClient.get<T>(endpoint, config).then((response) => response.data)
     }
