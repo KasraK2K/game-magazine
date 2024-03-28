@@ -1,17 +1,15 @@
+import { Box, Grid, GridItem, HStack, Show } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Grid, GridItem, Show, HStack, Box } from '@chakra-ui/react'
-import NavBar from './components/NavBar'
 import GameGrid from './components/GameGrid'
+import GameHeading from './components/GameHeading'
 import GenreList from './components/GenreList'
+import NavBar from './components/NavBar'
 import PlatformSelector from './components/PlatformSelector'
 import SortSelector from './components/SortSelector'
-import GameHeading from './components/GameHeading'
-import { Genre } from './hooks/useGenres'
-import { Platform } from './hooks/usePlatforms'
 
 export interface GameQuery {
-    genre: Genre | null
-    platform: Platform | null
+    genreId?: number
+    platformId?: number
     sortOrder: string
     searchText: string
     pageSize: number
@@ -31,8 +29,8 @@ function App() {
             <Show above='lg'>
                 <GridItem area='aside' paddingX={4}>
                     <GenreList
-                        selectedGenre={gameQuery.genre}
-                        onSelectGenre={(genre) => setGameQuery({ ...gameQuery, genre })}
+                        selectedGenreId={gameQuery.genreId}
+                        onSelectGenre={(genre) => setGameQuery({ ...gameQuery, genreId: genre.id })}
                     />
                 </GridItem>
             </Show>
@@ -41,8 +39,8 @@ function App() {
                     <GameHeading gameQuery={gameQuery} />
                     <HStack spacing={5} marginBottom={5}>
                         <PlatformSelector
-                            selectedPlatform={gameQuery.platform}
-                            onSelectPlatform={(platform) => setGameQuery({ ...gameQuery, platform })}
+                            selectedPlatformId={gameQuery.platformId}
+                            onSelectPlatform={(platform) => setGameQuery({ ...gameQuery, platformId: platform.id })}
                         />
                         <SortSelector
                             sortOrder={gameQuery.sortOrder}

@@ -13,21 +13,13 @@ export interface Game {
 }
 
 const useGames = (gameQuery: GameQuery) => {
-    const params = {
-        genres: gameQuery?.genre?.id,
-        parent_platforms: gameQuery?.platform?.id,
-        ordering: gameQuery.sortOrder,
-        search: gameQuery.searchText,
-        page_size: gameQuery.pageSize,
-    }
-
     return useInfiniteQuery<FetchResponse<Game>>({
-        queryKey: ['games', params],
+        queryKey: ['games', gameQuery],
         queryFn: ({ pageParam = 1 }) =>
             apiClient.get<FetchResponse<Game>>('/games', {
                 params: {
-                    genres: gameQuery?.genre?.id,
-                    parent_platforms: gameQuery?.platform?.id,
+                    genres: gameQuery?.genreId,
+                    parent_platforms: gameQuery?.platformId,
                     ordering: gameQuery.sortOrder,
                     search: gameQuery.searchText,
                     page_size: gameQuery.pageSize,
