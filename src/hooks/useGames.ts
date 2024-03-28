@@ -13,7 +13,7 @@ export interface Game {
 const useGames = (gameQuery: GameQuery) => {
     const params = {
         genres: gameQuery?.genre?.id,
-        platforms: gameQuery?.platform?.id,
+        parent_platforms: gameQuery?.platform?.id,
         ordering: gameQuery.sortOrder,
         search: gameQuery.searchText,
         page_size: gameQuery.pageSize,
