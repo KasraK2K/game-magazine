@@ -1,5 +1,5 @@
-// import useData from './useData'
 import platforms from '../data/platforms'
+import { useData } from './useData'
 
 export interface Platform {
     id: number
@@ -7,7 +7,11 @@ export interface Platform {
     slug: string
 }
 
-// const usePlatforms = () => useData<Platform>('/platforms/lists/parents')
-const usePlatforms = () => ({ data: platforms, error: null, isLoading: false })
+const usePlatforms = () => {
+    return useData('/platforms/lists/parents', ['platforms', 'lists', 'parents'], {
+        staleTime: 24 * 60 * 60 * 1000,
+        initialData: platforms,
+    })
+}
 
 export default usePlatforms
