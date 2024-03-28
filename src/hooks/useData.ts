@@ -1,4 +1,4 @@
-import apiClient, { AxiosRequestConfig } from '../services/api-client'
+import ApiClient, { AxiosRequestConfig } from '../services/api-client'
 import { useQuery } from '@tanstack/react-query'
 
 interface FetchResponse<T> {
@@ -6,17 +6,16 @@ interface FetchResponse<T> {
     results: T
 }
 
-const useData = <T>(config: AxiosRequestConfig, queryKey: string[]) => {
-    const fetchData = () => apiClient.request<FetchResponse<T>>(config).then((response) => response.data.results)
+const useData = <T>(url: string, queryKey: unknown[], config: AxiosRequestConfig) => {
+    const apiClient = new ApiClient(url)
+    const fetchData = () => apiClient.getAll<FetchResponse<T>>(config).then((response) => response.results)
 
-    const { data, error, isLoading } = useQuery({
+    return useQuery({
         queryKey,
         queryFn: fetchData,
-        gcTime: 10_000,
-        staleTime: 10_000,
+        retry: 1,
+        staleTime: 5 * 60 * 1000, // 5 min
     })
-
-    return { data, error, isLoading }
 }
 
 export default useData
