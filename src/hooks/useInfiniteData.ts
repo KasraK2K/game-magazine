@@ -9,7 +9,7 @@ interface FetchResponse<T> {
 const useInfiniteData = <T>(url: string, queryKey: unknown[], config?: AxiosRequestConfig) => {
     const apiClient = new ApiClient(url)
 
-    const fetchData = () => apiClient.getAll<FetchResponse<T[]>>(config).then((response) => response.results)
+    const fetchData = () => apiClient.get<FetchResponse<T[]>>(config).then((response) => response.results)
 
     const calculatePageParam = (page: number, operateNumber: number) => {
         const pageNumber = page > 0 ? page + operateNumber : undefined

@@ -8,7 +8,7 @@ interface FetchResponse<T> {
 
 const useData = <T>(url: string, queryKey: unknown[], config: AxiosRequestConfig) => {
     const apiClient = new ApiClient(url)
-    const fetchData = () => apiClient.getAll<FetchResponse<T>>(config).then((response) => response.results)
+    const fetchData = () => apiClient.get<FetchResponse<T>>(config).then((response) => response.results)
 
     return useQuery({
         queryKey,

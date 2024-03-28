@@ -8,7 +8,7 @@ const apiClient = axios.create({
 class ApiClient {
     constructor(private endpoint: string) {}
 
-    async getAll<T>(config?: AxiosRequestConfig) {
+    async get<T>(config?: AxiosRequestConfig) {
         return apiClient.get<T>(this.endpoint, config).then((response) => response.data)
     }
 
