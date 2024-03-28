@@ -35,7 +35,7 @@ const useGames = (gameQuery: GameQuery) => {
                 },
             }),
         retry: 1,
-        staleTime: 10 * 60 * 1000, // 10 Minutes
+        staleTime: 24 * 60 * 60 * 1000, // 24 Hours
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => (lastPage.next ? allPages.length + 1 : undefined),
         getPreviousPageParam: (lastPage, allPages) => (lastPage.previous ? allPages.length - 1 : undefined),
