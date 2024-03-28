@@ -25,6 +25,7 @@ dist-ssr
 
 # Kasra
 ios/
+android/
 
 pnpm-lock.yaml
 .vercel
