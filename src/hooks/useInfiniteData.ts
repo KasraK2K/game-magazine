@@ -1,4 +1,4 @@
-import ApiClient, { AxiosRequestConfig } from '../services/api-client'
+import apiClient, { AxiosRequestConfig } from '../services/api-client'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 interface FetchResponse<T> {
@@ -7,9 +7,7 @@ interface FetchResponse<T> {
 }
 
 const useInfiniteData = <T>(url: string, queryKey: unknown[], config?: AxiosRequestConfig) => {
-    const apiClient = new ApiClient(url)
-
-    const fetchData = () => apiClient.get<FetchResponse<T[]>>(config).then((response) => response.results)
+    const fetchData = () => apiClient.get<FetchResponse<T[]>>(url, config).then((response) => response.results)
 
     const calculatePageParam = (page: number, operateNumber: number) => {
         const pageNumber = page > 0 ? page + operateNumber : undefined

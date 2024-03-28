@@ -6,17 +6,17 @@ const apiClient = axios.create({
 })
 
 class ApiClient {
-    constructor(private endpoint: string) {}
+    constructor() {}
 
-    async get<T>(config?: AxiosRequestConfig) {
-        return apiClient.get<T>(this.endpoint, config).then((response) => response.data)
+    async get<T>(endpoint: string, config?: AxiosRequestConfig) {
+        return apiClient.get<T>(endpoint, config).then((response) => response.data)
     }
 
-    async post<T>(data: T) {
-        return apiClient.post<T>(this.endpoint, data).then((response) => response.data)
+    async post<T>(endpoint: string, data: T) {
+        return apiClient.post<T>(endpoint, data).then((response) => response.data)
     }
 }
 
 export { type AxiosRequestConfig }
 
-export default ApiClient
+export default new ApiClient()
