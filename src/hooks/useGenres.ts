@@ -1,13 +1,13 @@
-// import useData from './useData'
-import genres from '../data/genres'
+import { useData } from './useData'
+import staticGenres from '../data/genres'
 
 export interface Genre {
-    id: 0
+    id: number
     name: string
     image_background: string
 }
 
-// const useGenres = () => useData<Genre>('/genres')
-const useGenres = () => ({ data: genres, error: null, isLoading: false })
+const useGenres = () =>
+    useData<Genre>('/genres', ['genres'], { staleTime: 24 * 60 * 60 * 1000, initialData: staticGenres })
 
 export default useGenres
