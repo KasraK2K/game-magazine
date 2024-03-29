@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import apiClient from '../services/api-client'
+import ms from 'ms'
 import { GameQuery } from '../App'
+import apiClient, { FetchResponse } from '../services/api-client'
 import { Platform } from './usePlatforms'
-import { FetchResponse } from '../services/api-client'
 
 export interface Game {
     id: number
@@ -27,7 +27,7 @@ const useGames = (gameQuery: GameQuery) => {
                 },
             }),
         retry: 1,
-        staleTime: 24 * 60 * 60 * 1000, // 24 Hours
+        staleTime: ms('24h'),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => (lastPage.next ? allPages.length + 1 : undefined),
         getPreviousPageParam: (lastPage, allPages) => (lastPage.previous ? allPages.length - 1 : undefined),
