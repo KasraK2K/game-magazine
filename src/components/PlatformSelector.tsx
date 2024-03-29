@@ -1,14 +1,13 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { BsChevronDown } from 'react-icons/bs'
 import usePlatform from '../hooks/usePlatform'
-import usePlatforms, { Platform } from '../hooks/usePlatforms'
+import usePlatforms from '../hooks/usePlatforms'
+import useGameQueryStore from '../stores/gameStore'
 
-interface Props {
-    selectedPlatformId?: number
-    onSelectPlatform: (platformId: Platform) => void
-}
+const PlatformSelector = () => {
+    const selectedPlatformId = useGameQueryStore((s) => s.gameQuery.platformId)
+    const setSelectedPlatformId = useGameQueryStore((s) => s.setPlatformId)
 
-const PlatformSelector = ({ selectedPlatformId, onSelectPlatform }: Props) => {
     const { data, error } = usePlatforms()
     const selectedPlatform = usePlatform(selectedPlatformId)
 
@@ -19,12 +18,12 @@ const PlatformSelector = ({ selectedPlatformId, onSelectPlatform }: Props) => {
                 {selectedPlatform?.name ?? 'Platform'}
             </MenuButton>
             <MenuList>
-                <MenuItem onClick={() => onSelectPlatform({} as Platform)}>Platform</MenuItem>
+                <MenuItem onClick={() => setSelectedPlatformId(undefined)}>Platform</MenuItem>
                 {data?.results.map((platform) => (
                     <MenuItem
                         key={platform.id}
                         value={platform.id}
-                        onClick={() => onSelectPlatform(platform)}
+                        onClick={() => setSelectedPlatformId(platform.id)}
                         textColor={platform.id === selectedPlatformId ? 'green.300' : ''}
                     >
                         {platform.name}

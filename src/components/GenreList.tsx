@@ -1,14 +1,13 @@
 import { Button, HStack, Heading, Image, List, ListItem, Spinner } from '@chakra-ui/react'
-import useGenres, { Genre } from '../hooks/useGenres'
+import allGamesImage from '../assets/game.jpg'
+import useGenres from '../hooks/useGenres'
 import getCroppedImageUrl from '../services/image-url'
+import useGameQueryStore from '../stores/gameStore'
 
-interface Props {
-    selectedGenreId?: number
-    onSelectGenre: (genre: Genre) => void
-}
-
-const GenreList = ({ selectedGenreId, onSelectGenre }: Props) => {
+const GenreList = () => {
     const { data, error, isLoading } = useGenres()
+    const selectedGenreId = useGameQueryStore((s) => s.gameQuery.genreId)
+    const setSelectedGenreId = useGameQueryStore((s) => s.setGenreId)
 
     if (error) return null
     if (isLoading) return <Spinner />
@@ -18,6 +17,23 @@ const GenreList = ({ selectedGenreId, onSelectGenre }: Props) => {
                 Genres
             </Heading>
             <List>
+                {/* START: All games */}
+                <HStack>
+                    <Image boxSize='32px' borderRadius={8} src={allGamesImage} objectFit='cover' />
+                    <Button
+                        whiteSpace='normal'
+                        textAlign='left'
+                        fontWeight={setSelectedGenreId === undefined ? 'bold' : 'normal'}
+                        onClick={() => setSelectedGenreId(undefined)}
+                        fontSize='large'
+                        variant='link'
+                    >
+                        All Games
+                    </Button>
+                </HStack>
+                {/* END */}
+
+                {/* START: Other types of games */}
                 {data?.results.map((genre) => (
                     <ListItem key={genre.id} paddingY='5px'>
                         <HStack>
@@ -31,7 +47,7 @@ const GenreList = ({ selectedGenreId, onSelectGenre }: Props) => {
                                 whiteSpace='normal'
                                 textAlign='left'
                                 fontWeight={genre.id === selectedGenreId ? 'bold' : 'normal'}
-                                onClick={() => onSelectGenre(genre)}
+                                onClick={() => setSelectedGenreId(genre.id)}
                                 fontSize='large'
                                 variant='link'
                             >
@@ -40,6 +56,7 @@ const GenreList = ({ selectedGenreId, onSelectGenre }: Props) => {
                         </HStack>
                     </ListItem>
                 ))}
+                {/* END */}
             </List>
         </>
     )

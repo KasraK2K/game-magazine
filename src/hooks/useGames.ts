@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import ms from 'ms'
-import { GameQuery } from '../App'
 import apiClient, { FetchResponse } from '../services/api-client'
+import useGameQueryStore from '../stores/gameStore'
 import { Platform } from './usePlatforms'
 
 export interface Game {
@@ -12,7 +12,9 @@ export interface Game {
     metacritic: number
 }
 
-const useGames = (gameQuery: GameQuery) => {
+const useGames = () => {
+    const gameQuery = useGameQueryStore((s) => s.gameQuery)
+
     return useInfiniteQuery<FetchResponse<Game>>({
         queryKey: ['games', gameQuery],
         queryFn: ({ pageParam = 1 }) =>
