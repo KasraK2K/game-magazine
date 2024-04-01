@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react'
 import useTrailers from '../hooks/useTrailers'
 
 interface Props {
@@ -14,11 +13,7 @@ const GameTrailer = ({ gameId }: Props) => {
 
     const first = trailers?.results[0]
 
-    return first ? (
-        <Box maxWidth='854px' marginBottom={2}>
-            <video src={first.data[480]} poster={first.preview} controls />
-        </Box>
-    ) : null
+    return first ? <video src={first.data[480]} poster={first.preview} controls /> : null
 }
 
 export default GameTrailer
