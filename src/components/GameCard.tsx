@@ -17,7 +17,9 @@ const GameCard = ({ game }: Props) => {
             overflow='hidden'
             _hover={{ transform: 'scale(1.03)', transition: 'transform 0.15s ease-in' }}
         >
-            <Image src={getCroppedImageUrl(game.background_image)} />
+            <Link to={`/games/${game.slug}`}>
+                <Image src={getCroppedImageUrl(game.background_image)} alt={game.name} />
+            </Link>
             <CardBody>
                 <HStack justifyContent='space-between' alignItems='start' marginBottom={3}>
                     <PlatformIconList platform={game.parent_platforms?.map((p) => p.platform)} />
